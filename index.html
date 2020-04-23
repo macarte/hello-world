@@ -5,14 +5,77 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <title>my-first-website</title>
   <LINK href="styles.css" rel="stylesheet" type="text/css">
+
+
+    <script>
+
+      function jsontolua(jsonObject, tabs = "") {
+        var contentTabs = tabs + "  ";
+        var result = "null";
+        if (jsonObject != null) {
+          if (Array.isArray(jsonObject))
+          {
+              var arrayLen = 0;
+              result = "{\n";
+              jsonObject.forEach(element => {
+                if (arrayLen > 0) {
+                  result += ",\n";
+                }
+                result += contentTabs + jsontolua(element, contentTabs);
+                arrayLen ++;
+              });
+              result += "\n" + tabs + "}";
+              arrayLen ++;
+          }        
+          else if (jsonObject instanceof Object)
+          {
+              var arrayLen = 0;
+              result = "{\n";
+              for(var key in jsonObject) {
+                if (arrayLen > 0) {
+                  result += ",\n";
+                }
+                result += contentTabs + "[\"" + key + "\"] = " + jsontolua(jsonObject[key], contentTabs);
+                arrayLen ++;
+              }
+              result += "\n" + tabs + "}";
+              arrayLen ++;
+          }
+          else if (typeof jsonObject == "string")
+          {
+            result = "\"" + jsonObject.replace(/\"/g, "\\\"") + "\"";
+          }
+          else
+          {
+            result = "" + jsonObject;
+          }
+        }
+        return result;
+      }
+
+      function myFunction() {
+        json = document.getElementById("json").value;
+        try {
+          var jsonObject = JSON.parse(json);
+          document.getElementById("lua").value = "return " + jsontolua(jsonObject);
+        }
+        catch (ex) {
+          document.getElementById("lua").value = "ERROR! " + ex;
+        }
+      }
+    </script>
+
 </head>
 
 <body>
-
-<img src="https://octodex.github.com/images/daftpunktocat-thomas.gif" id="octocat" alt="octocat-gif" />
-
-<!-- Change this code here by copy and pasting your template on line 15 -->
-<p>Hello World! I’m macarte. This is my website!</p>
-
+  <div class="pagediv">
+    <textarea id="json">
+    </textarea>
+    <div class="buttonbar">
+      <button type="button" onclick="myFunction()">Convert JSON to LUA</button>
+    </div>
+    <textarea id="lua">
+    </textarea>
+  </div>
 </body>
 </html>
