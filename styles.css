@@ -3,10 +3,29 @@
   padding:0px;
 }
 
-#octocat {
-  display: block;
-  width:384px;
-  margin: 50px auto;
+body {
+  width: 90vh;
+  height: 90vh;
+}
+
+.pagediv {
+  height: 100%;
+  margin: 10px;
+  vertical-align: middle;
+}
+
+.buttonbar {
+  align-content: center;
+  margin: 10px;
+}
+
+button {
+  padding: 10px;
+}
+
+textarea {
+  width: 100%;
+  height: 50%;
 }
 
 p {
